@@ -22,7 +22,6 @@ namespace Ships
             InitializeComponent();
             listBox2.Visible = false;
             label2.Visible = false;
-            button4.Visible = false;
         }
         //Кнопка "Рисовать"
         public void button2_Click(object sender, EventArgs e)
@@ -175,13 +174,32 @@ namespace Ships
                     }
                     for (int k = 0; k < component.ComponentFrames.Count - 1; k++)
                     {
-                        shipGraph.DrawLine(pen, pointsMax[k], pointsMax[k + 1]);
-                        shipGraph.DrawLine(pen, pointsMax1[k], pointsMax1[k + 1]);
+                            if (component.ComponentName[0] == 'Z')
+                            {
+                                shipGraph.DrawLine(pen, pointsMax[k], pointsMax[k + 1]);
+                                //shipGraph.DrawLine(pen, pointsMin[k], pointsMin[k + 1]);
+                                shipGraph.DrawLine(pen, pointsMax1[k], pointsMax1[k + 1]);
+                            }
+                            else
+                            {
+                                shipGraph.DrawLine(pen, pointsMax[k], pointsMax[k + 1]);
+                                shipGraph.DrawLine(pen, pointsMin[k], pointsMin[k + 1]);
+                                //shipGraph.DrawLine(pen, pointsMax1[k], pointsMax1[k + 1]);
+                            }
                     }
-                    shipGraph.DrawLine(pen, pointsMax[0], pointsMax1[0]);
-                    shipGraph.DrawLine(pen, pointsMax1[component.ComponentFrames.Count - 1], pointsMax[component.ComponentFrames.Count - 1]);
-                    shipGraph.DrawLine(pen, pointsMax1[pointsMax1.Length - 1], pointsMax[pointsMax.Length - 1]);
-            }
+                        if (component.ComponentName[0] == 'Z')
+                        {
+                            shipGraph.DrawLine(pen, pointsMax1[pointsMax1.Length - 1], pointsMax[pointsMax.Length - 1]);
+                            shipGraph.DrawLine(pen, pointsMax1[0], pointsMax[0]);
+                        } else
+                    {
+                        shipGraph.DrawLine(pen, pointsMin[0], pointsMax[0]);
+                        shipGraph.DrawLine(pen, pointsMin[pointsMin.Length - 1], pointsMax[pointsMax.Length - 1]);
+                    }
+
+                        //shipGraph.DrawLine(pen, pointsMax[0], pointsMax1[0]);
+                        //shipGraph.DrawLine(pen, pointsMax1[component.ComponentFrames.Count - 1], pointsMax[component.ComponentFrames.Count - 1]);
+                    }
         }
         }
         //Проекция танков сбоку
@@ -226,12 +244,16 @@ namespace Ships
         }
         public void FillPartsListBox()
         {
-            int index = 0;
-            foreach (var Part in ship.parts)
+            if (listBox1.Items.Count == 0)
             {
-                listBox1.Items.Insert(index, Part.PartName);
-                index++;
+                int index = 0;
+                foreach (var Part in ship.parts)
+                {
+                    listBox1.Items.Insert(index, Part.PartName);
+                    index++;
+                }
             }
+
         }
         public Vessel.Part GetComponentName()
         {
@@ -250,6 +272,7 @@ namespace Ships
         }
         public void FillComponentsListBox()
         {
+            //listBox1.Items.Clear();
             listBox2.Visible = true;
             string Selected = listBox1.SelectedItem.ToString();
             int index = 0;
@@ -345,12 +368,31 @@ namespace Ships
                 }
                 for (int k = 0; k < CurrentComponent.ComponentFrames.Count - 1; k++)
                 {
-                    shipGraph.DrawLine(pen, pointsMax[k], pointsMax[k + 1]);
-                    shipGraph.DrawLine(pen, pointsMax1[k], pointsMax1[k + 1]);
+                    if (CurrentComponent.ComponentName[0] == 'Z')
+                    {
+                        shipGraph.DrawLine(pen, pointsMax[k], pointsMax[k + 1]);
+                        //shipGraph.DrawLine(pen, pointsMin[k], pointsMin[k + 1]);
+                        shipGraph.DrawLine(pen, pointsMax1[k], pointsMax1[k + 1]);
+                    }
+                    else
+                    {
+                        shipGraph.DrawLine(pen, pointsMax[k], pointsMax[k + 1]);
+                        shipGraph.DrawLine(pen, pointsMin[k], pointsMin[k + 1]);
+                        //shipGraph.DrawLine(pen, pointsMax1[k], pointsMax1[k + 1]);
+                    }
                 }
-                shipGraph.DrawLine(pen, pointsMax[0], pointsMax1[0]);
-                shipGraph.DrawLine(pen, pointsMax1[CurrentComponent.ComponentFrames.Count - 1], pointsMax[CurrentComponent.ComponentFrames.Count - 1]);
-                shipGraph.DrawLine(pen, pointsMax1[pointsMax1.Length - 1], pointsMax[pointsMax.Length - 1]);
+                if (CurrentComponent.ComponentName[0] == 'Z')
+                {
+                    shipGraph.DrawLine(pen, pointsMax1[pointsMax1.Length - 1], pointsMax[pointsMax.Length - 1]);
+                    shipGraph.DrawLine(pen, pointsMax1[0], pointsMax[0]);
+                }
+                else
+                {
+                    shipGraph.DrawLine(pen, pointsMin[0], pointsMax[0]);
+                    shipGraph.DrawLine(pen, pointsMin[pointsMin.Length - 1], pointsMax[pointsMax.Length - 1]);
+                }
+                //shipGraph.DrawLine(pen, pointsMax1[CurrentComponent.ComponentFrames.Count - 1], pointsMax[CurrentComponent.ComponentFrames.Count - 1]);
+                //shipGraph.DrawLine(pen, pointsMax1[pointsMax1.Length - 1], pointsMax[pointsMax.Length - 1]);
 
                 PointF[] pointsMinSide = new PointF[CurrentComponent.ComponentFrames.Count];
                 PointF[] pointsMaxSide = new PointF[CurrentComponent.ComponentFrames.Count];
